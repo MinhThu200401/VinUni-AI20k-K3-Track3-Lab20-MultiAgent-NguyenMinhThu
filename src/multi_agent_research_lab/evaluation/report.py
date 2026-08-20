@@ -3,10 +3,13 @@
 from multi_agent_research_lab.core.schemas import BenchmarkMetrics
 
 
-def render_markdown_report(metrics: list[BenchmarkMetrics]) -> str:
-    """Render benchmark metrics to markdown.
-
-    TODO(student): Add richer analysis, examples, screenshots, and trace links.
+def render_markdown_report(
+    metrics: list[BenchmarkMetrics],
+    analysis: str = "",
+    trace_links: list[str] | None = None,
+) -> str:
+    """Render benchmark metrics to a markdown report with a comparison table,
+    optional trace links, and a free-text failure-mode analysis section.
     """
 
     lines = [
@@ -24,4 +27,12 @@ def render_markdown_report(metrics: list[BenchmarkMetrics]) -> str:
             f"| {item.run_name} | {item.latency_seconds:.2f} | {cost} | {quality} "
             f"| {citation} | {failure} | {item.notes} |"
         )
+
+    if trace_links:
+        lines += ["", "## Trace evidence", ""]
+        lines += [f"- {link}" for link in trace_links]
+
+    if analysis:
+        lines += ["", "## Analysis", "", analysis]
+
     return "\n".join(lines) + "\n"

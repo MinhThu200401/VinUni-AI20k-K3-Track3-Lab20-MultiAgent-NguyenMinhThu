@@ -114,4 +114,21 @@ Cách khắc phục (chọn 1 trong 3):
 Mỗi nhóm trả lời 2 câu:
 
 1. Case nào nên dùng multi-agent? Vì sao?
+
+   Khi câu hỏi cần nhiều bước xử lý có bản chất khác nhau — tìm nguồn, đánh giá
+   độ tin cậy, rồi tổng hợp thành câu trả lời có trích dẫn — và độ chính xác/khả
+   năng audit quan trọng hơn tốc độ. Kết quả benchmark thực tế trong
+   `reports/benchmark_report.md` cho thấy multi-agent đạt citation coverage
+   100% (baseline không trích dẫn được vì không có bước tách nguồn riêng) và
+   quality score heuristic cao hơn (9.0 vs 6.0), đổi lại latency và cost cao
+   hơn ~3 lần. Đây là đánh đổi hợp lý cho các tác vụ research/report cần
+   nguồn rõ ràng, hoặc khi cần trace từng bước để debug khi kết quả sai.
+
 2. Case nào không nên dùng multi-agent? Vì sao?
+
+   Khi câu hỏi đơn giản, có thể trả lời trực tiếp từ kiến thức của model (không
+   cần tra cứu nguồn ngoài), hoặc khi latency là ràng buộc cứng (ví dụ chatbot
+   real-time). Trong benchmark, baseline trả lời nhanh hơn nhiều (2.6–8.6s so
+   với 18–25s) với chi phí thấp hơn ~3 lần. Việc thêm Supervisor/Researcher/
+   Analyst chỉ tạo thêm latency và cost mà không cải thiện chất lượng nếu
+   không có nhu cầu trích dẫn nguồn hay phân tích nhiều góc nhìn.
